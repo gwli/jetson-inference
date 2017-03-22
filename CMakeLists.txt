@@ -8,26 +8,26 @@ set(BUILD_DEPS "YES" CACHE BOOL "If YES, will install dependencies into sandbox.
 
 
 # if this is the first time running cmake, perform pre-build dependency install script (or if the user manually triggers re-building the dependencies)
-if( ${BUILD_DEPS} )
-	message("Launching pre-build dependency installer script...")
-
-	execute_process(COMMAND sh ../CMakePreBuild.sh
-				WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-				RESULT_VARIABLE PREBUILD_SCRIPT_RESULT)
-
-	set(BUILD_DEPS "NO" CACHE BOOL "If YES, will install dependencies into sandbox.  Automatically reset to NO after dependencies are installed." FORCE)
-	message("Finished installing dependencies")
-endif()
+#if( ${BUILD_DEPS} )
+#	message("Launching pre-build dependency installer script...")
+#
+#	execute_process(COMMAND sh ../CMakePreBuild.sh
+#				WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+#				RESULT_VARIABLE PREBUILD_SCRIPT_RESULT)
+#
+#	set(BUILD_DEPS "NO" CACHE BOOL "If YES, will install dependencies into sandbox.  Automatically reset to NO after dependencies are installed." FORCE)
+#	message("Finished installing dependencies")
+#endif()
 
 
 # Qt is used to load images (installed by ubuntu-desktop)
-find_package(Qt4 REQUIRED)
-include(${QT_USE_FILE})
-add_definitions(${QT_DEFINITIONS})
+#find_package(Qt4 REQUIRED)
+#include(${QT_USE_FILE})
+#add_definitions(${QT_DEFINITIONS})
 
 
 # setup CUDA
-find_package(CUDA)
+#find_package(CUDA)
 
 set(
 	CUDA_NVCC_FLAGS
@@ -60,7 +60,7 @@ include_directories(/usr/include/gstreamer-1.0 /usr/lib/aarch64-linux-gnu/gstrea
 file(GLOB inferenceSources *.cpp *.cu util/*.cpp util/camera/*.cpp util/cuda/*.cu util/display/*.cpp)
 file(GLOB inferenceIncludes *.h util/*.h util/camera/*.h util/cuda/*.h util/display/*.h)
 
-cuda_add_library(jetson-inference SHARED ${inferenceSources})
+add_library(jetson-inference SHARED ${inferenceSources})
 target_link_libraries(jetson-inference nvcaffe_parser nvinfer Qt4::QtGui GL GLEW gstreamer-1.0 gstapp-1.0)		# gstreamer-0.10 gstbase-0.10 gstapp-0.10 
 
 
